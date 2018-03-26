@@ -1,0 +1,28 @@
+{
+  "name": "band-script",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/misupopo/band-script.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/misupopo/band-script/issues"
+  },
+  "homepage": "https://github.com/misupopo/band-script#readme",
+  "dependencies": {
+    "puppeteer": "^1.2.0"
+  },
+  "devDependencies": {
+    "redis": "^2.8.0"
+  }
+}
