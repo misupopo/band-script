@@ -47,8 +47,6 @@ const puppeteer = require('puppeteer'),
         page.waitForNavigation(),
     ]);
 
-    // await page.screenshot({path: config.imgPath + 'sample1.png'});
-
     await browser.close();
 })();
 
