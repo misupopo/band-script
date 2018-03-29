@@ -54,6 +54,22 @@ const updateArticle = async () => {
 
     const splitData = changeWord.split('、');
 
+    ['Gt','Ba','Dr'].forEach(async (data) => {
+        if (data === 'Gt') {
+            await page.evaluate(() => {
+                document.querySelector('input#documentPart2').checked = false;
+            });
+        } else if (data === 'Ba') {
+            await page.evaluate(() => {
+                document.querySelector('input#documentPart3').checked = false;
+            });
+        } else if (data === 'Dr') {
+            await page.evaluate(() => {
+                document.querySelector('input#documentPart5').checked = false;
+            });
+        }
+    });
+
     splitData.forEach(async (data) => {
         if (data === 'Gt') {
             await page.evaluate(() => {
@@ -81,6 +97,8 @@ const updateArticle = async () => {
     await page.evaluate(() => {
         document.querySelector('input#postTwitter').checked = true;
     });
+
+    await page.screenshot({path: path.resolve(config.imgPath) + '/exec.png', fullPage: true});
 
     await Promise.all([
         page.$eval('.bg_o2', target => target.click()),
@@ -136,6 +154,22 @@ const createArticle = async () => {
         document.querySelector('input[name="documentSongUrl"]').value = text;
     }, config.songUrl);
 
+    ['Gt','Ba','Dr'].forEach(async (data) => {
+        if (data === 'Gt') {
+            await page.evaluate(() => {
+                document.querySelector('input#documentPart2').checked = false;
+            });
+        } else if (data === 'Ba') {
+            await page.evaluate(() => {
+                document.querySelector('input#documentPart3').checked = false;
+            });
+        } else if (data === 'Dr') {
+            await page.evaluate(() => {
+                document.querySelector('input#documentPart5').checked = false;
+            });
+        }
+    });
+
     const splitData = changeWord.split('、');
 
     splitData.forEach(async (data) => {
@@ -183,7 +217,7 @@ const createArticle = async () => {
         page.waitForNavigation(),
     ]);
 
-    await page.screenshot({path: path.resolve(config.imgPath) + '/sample.png', fullPage: true});
+    await page.screenshot({path: path.resolve(config.imgPath) + '/exec.png', fullPage: true});
 
     await browser.close();
 };

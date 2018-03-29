@@ -7,7 +7,10 @@
     "lib": "lib"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "route1create": "node execute/route1/create.js",
+    "route1remove": "node execute/route1/remove.js",
+    "route1update": "node execute/route1/update.js",
+    "route2update": "node execute/route2/update.js"
   },
   "repository": {
     "type": "git",
