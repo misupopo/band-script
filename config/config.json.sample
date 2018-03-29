@@ -1,5 +1,8 @@
 {
     "id": "test",
     "password": "test",
-    "url": "http://www.test"
+    "url": "http://www.test",
+    "url1": "http://www.test",
+    "developerMode": false,
+    "songUrl": "http://www.song.co.jp"
 }

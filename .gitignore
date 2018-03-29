@@ -3,3 +3,4 @@ dump.rdb
 img/*
 !.gitkeep
 config.json
+articleText.txt

@@ -2,8 +2,11 @@
 const define = require('./config.json');
 
 module.exports = {
-    imgPath: '../img/',
+    imgPath: './img',
     url: define.url,
+    url1: define.url1,
     id: define.id,
-    password: define.password
+    password: define.password,
+    developerMode: define.developerMode,
+    songUrl: define.songUrl
 };
