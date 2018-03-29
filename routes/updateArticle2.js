@@ -54,6 +54,42 @@ const updateArticle1 = async () => {
         document.querySelector('textarea[name="data[MemberRequest][post_text]"]').value = text;
     }, newEditBody);
 
+    ['Gt','Ba','Dr'].forEach(async (data) => {
+        if (data === 'Gt') {
+            await page.evaluate(() => {
+                document.querySelector('input#MemberPartPartエレキギター').checked = false;
+            });
+        } else if (data === 'Ba') {
+            await page.evaluate(() => {
+                document.querySelector('input#MemberPartPartエレキベース').checked = false;
+            });
+        } else if (data === 'Dr') {
+            await page.evaluate(() => {
+                document.querySelector('input#MemberPartPartドラム').checked = false;
+            });
+        }
+    });
+
+    const splitData = changeWord.split('、');
+
+    splitData.forEach(async (data) => {
+        if (data === 'Gt') {
+            await page.evaluate(() => {
+                document.querySelector('input#MemberPartPartエレキギター').checked = true;
+            });
+        } else if (data === 'Ba') {
+            await page.evaluate(() => {
+                document.querySelector('input#MemberPartPartエレキベース').checked = true;
+            });
+        } else if (data === 'Dr') {
+            await page.evaluate(() => {
+                document.querySelector('input#MemberPartPartドラム').checked = true;
+            });
+        }
+    });
+
+    await page.screenshot({path: path.resolve(config.imgPath) + '/exec2.png', fullPage: true});
+
     await Promise.all([
         page.$eval('#contents-btn', target => target.click()),
         page.waitForNavigation(),
@@ -63,8 +99,6 @@ const updateArticle1 = async () => {
         page.$eval('input[name="login_action"][value="登録"]', target => target.click()),
         page.waitForNavigation(),
     ]);
-
-    await page.screenshot({path: path.resolve(config.imgPath) + '/sample.png', fullPage: true});
 
     await browser.close();
 
