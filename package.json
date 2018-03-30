@@ -10,6 +10,7 @@
     "route1create": "node execute/route1/create.js",
     "route1remove": "node execute/route1/remove.js",
     "route1update": "node execute/route1/update.js",
+    "route1JustUpdate": "node execute/route1/justUpdate.js",
     "route2update": "node execute/route2/update.js"
   },
   "repository": {

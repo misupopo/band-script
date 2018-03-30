@@ -222,9 +222,23 @@ const createArticle = async () => {
     await browser.close();
 };
 
+const justUpdate = async () => {
+    const browser = await loginAction();
 
+    const isHrefMatch = await page.evaluate(() => document.querySelector('#article_menu li:nth-child(0n+2)').innerHTML);
+
+    if (isHrefMatch.match(/href/)) {
+        await Promise.all([
+            page.$eval('#article_menu li:nth-child(0n+2) a', target => target.click()),
+            page.waitForNavigation(),
+        ]);
+    }
+
+    await browser.close();
+};
 
 
 module.exports.update = updateArticle;
 module.exports.remove = removeArticle;
 module.exports.create = createArticle;
+module.exports.justUpdate = justUpdate;
