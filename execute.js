@@ -4,7 +4,11 @@ const updateArticle2 = require('./routes/updateArticle2.js');
 const cronJob = require('cron').CronJob;
 
 const executeAction = async () => {
-    await updateArticle1.rotationAsking('Gt');
+    await updateArticle1.justUpdate();
+
+    // await updateArticle1.rotationAsking('Gt');
+    // await updateArticle1.rotationAsking('Ba');
+    // await updateArticle1.rotationAsking('Dr');
 };
 
 (async () => {
@@ -38,7 +42,7 @@ const executeAction = async () => {
 
     await executeAction();
 
-    // process.exit();
+    process.exit();
 })();
 
 

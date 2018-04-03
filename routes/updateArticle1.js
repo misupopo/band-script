@@ -308,12 +308,6 @@ const rotationAsking = async (data) => {
 
     await Promise.all(task);
 
-    // const getDetailUrl = await page.evaluate(() => {
-    //     return document.querySelector('.jsArchive article:nth-child(0n+1) a').href;
-    // });
-
-    // const detailUrl = getDetailUrl.replace(/(\d*)$/, '');
-
     // idを取得
     const idList = await page.$$eval('.jsArchive article', elements => elements.map((target) => {
         return target.getAttribute('data-userid')
@@ -327,9 +321,7 @@ const rotationAsking = async (data) => {
     // 問い合わせる回数
     let shouldAskingCount = config.shouldAskingCount;
 
-    const shouldAskTask = [];
-
-    const testAsk = async (targetId) => {
+    const shouldAsk = async (targetId) => {
         return new Promise(async (resolve, reject) => {
             const id = targetId;
 
@@ -342,9 +334,12 @@ const rotationAsking = async (data) => {
             const isVocal = await page.evaluate((id) => document.querySelector('article[data-userid="' + id + '"] .spec').innerHTML, id);
 
             if (isVocal.match(/ボーカル/)) {
+
                 console.log('true');
                 return resolve();
             } else {
+                const result = isVocal.match(/担当パート\<\/dt\>\n\s*\<dd\>(.*)\<\/dd\>/);
+                console.log(result);
                 console.log('false');
             }
 
@@ -360,8 +355,6 @@ const rotationAsking = async (data) => {
             const isMessaged = await page.evaluate(() => document.querySelector('#talks').innerHTML);
 
             if (!isMessaged.match(/talk_res/) && !isMessaged.match(/talk_message/)) {
-                console.log('check text');
-
                 let askingText = await new Promise((resolve, reject) => {
                     fs.readFile(path.resolve('./askingText.txt'), 'utf8', (err, text) => {
                         resolve(text);
@@ -384,11 +377,15 @@ const rotationAsking = async (data) => {
                     document.querySelector('textarea[name="messageBody"]').value = text;
                 }, replaceText);
 
+                await Promise.all([
+                    page.$eval('.res_form button', target => target.click()),
+                    page.waitForNavigation(),
+                ]);
+
                 // 回数を減らす
                 shouldAskingCount = (shouldAskingCount - 1);
             }
 
-            console.log('last resolve');
             await page.goto(config.url + 'メンバー/list',
                 {
                     waitUntil: 'networkidle2',
@@ -401,199 +398,15 @@ const rotationAsking = async (data) => {
         });
     };
 
-    // await testAsk(filterList[1]);
-    //
-    // console.log('testAskEnd 1');
-    //
-    // await testAsk(filterList[2]);
-    //
-    // console.log('testAskEnd 2');
-
-    const testArray = [filterList[1], filterList[2]];
-
     for (let i = 0; i < filterList.length; i++) {
-        const continueFlag = await testAsk(filterList[i]);
+        const continueFlag = await shouldAsk(filterList[i]);
 
         if (!continueFlag === 'end') {
             break;
         }
     }
 
-    console.log('complete');
-
-
-
-    // await Promise.all([
-    //     await testAsk(filterList[1]),
-    //     await testAsk(filterList[2])
-    // ]);
-
-    // for(let i = 0; i < filterList.length; i++) {
-    //     const id = filterList[i];
-    //
-    //     shouldAskTask.push(new Promise(async (resolve, reject) => {
-    //         if (shouldAskingCount <= 0) {
-    //             return resolve();
-    //         }
-    //
-    //         console.log('1');
-    //
-    //         await page.$eval('article[data-userid="' + id + '"] a', target => target.click());
-    //
-    //         console.log('2');
-    //
-    //         const isVocal = await page.evaluate(() => document.querySelector('article[data-userid="' + id + '"] .spec').innerHTML);
-    //
-    //         if (isVocal.match(/ボーカル/)) {
-    //             // console.log(isVocal);
-    //
-    //             console.log('true');
-    //             return resolve();
-    //         } else {
-    //             // console.log(isVocal);
-    //             console.log('false');
-    //         }
-    //
-    //         console.log('3');
-    //
-    //         await page.evaluate(() => {
-    //             document.querySelector('article[data-userid="' + id + '"] .detail_menu li:nth-child(0n+3) a').removeAttribute('target')
-    //         });
-    //
-    //         console.log('4');
-    //
-    //         await Promise.all([
-    //             page.$eval('article[data-userid="' + id + '"] .detail_menu li:nth-child(0n+3) a', target => target.click()),
-    //             page.waitForNavigation(),
-    //         ]);
-    //
-    //         // await Promise.all([
-    //         //     page.$eval('article[data-userid="' + id + '"] a', target => target.click()),
-    //         //     page.waitForNavigation(),
-    //         // ]);
-    //
-    //         console.log('5');
-    //
-    //         const isMessaged = await page.evaluate(() => document.querySelector('#talks').innerHTML);
-    //
-    //         if (!isMessaged.match(/talk_res/) && !isMessaged.match(/talk_message/)) {
-    //             console.log('check text');
-    //
-    //             let askingText = await new Promise((resolve, reject) => {
-    //                 fs.readFile(path.resolve('./askingText.txt'), 'utf8', (err, text) => {
-    //                     resolve(text);
-    //                 });
-    //             });
-    //
-    //             let partText;
-    //
-    //             if (data === 'Gt') {
-    //                 partText = 'ギター';
-    //             } else if (data === 'Ba') {
-    //                 partText = 'ベース';
-    //             } else if (data === 'Dr') {
-    //                 partText = 'ドラム';
-    //             }
-    //
-    //             const replaceText = await askingText.replace(/\w+/, partText);
-    //
-    //             await page.evaluate((text) => {
-    //                 document.querySelector('textarea[name="messageBody"]').value = text;
-    //             }, replaceText);
-    //
-    //             // 回数を減らす
-    //             shouldAskingCount = (shouldAskingCount - 1);
-    //         }
-    //
-    //         console.log('last resolve');
-    //         resolve();
-    //     }));
-    // }
-
-    // await Promise.all(shouldAskTask);
-
-    // for(let j = 0; shouldAskTask.length; j++) {
-    //     console.log(shouldAskTask[j]);
-    //
-    //     await shouldAskTask[j]();
-    // }
-
-    // filterList.forEach(async(id) => {
-    //
-    //     if (shouldAskingCount <= 0) {
-    //         return;
-    //     }
-    //
-    //     console.log('before move メンバー page');
-    //
-    //     await page.goto(config.url + 'メンバー/detail/' + id,
-    //     {
-    //         waitUntil: 'networkidle2',
-    //         timeout: 3000000
-    //     }).catch(reason => {
-    //         console.log(reason);
-    //     });
-    //
-    //     console.log('after move メンバー page');
-    //
-    //     const isVocal = await page.evaluate(() => document.querySelector('.spec').innerHTML);
-    //
-    //     if (isVocal.match(/ボーカル/)) {
-    //         console.log('true');
-    //         return;
-    //     } else {
-    //         console.log('false');
-    //     }
-    //
-    //     console.log('before move message page');
-    //
-    //     await page.goto(config.url + 'member/message/index/' + id,
-    //     {
-    //         waitUntil: 'networkidle2',
-    //         timeout: 3000000
-    //     }).catch(reason => {
-    //         console.log(reason);
-    //     });
-    //
-    //     console.log('moved message page');
-    //
-    //     const isMessaged = await page.evaluate(() => document.querySelector('#talks').innerHTML);
-    //
-    //     if (!isMessaged.match(/talk_res/) && !isMessaged.match(/talk_message/)) {
-    //         console.log('check text');
-    //
-    //         let askingText = await new Promise((resolve, reject) => {
-    //             fs.readFile(path.resolve('./askingText.txt'), 'utf8', (err, text) => {
-    //                 resolve(text);
-    //             });
-    //         });
-    //
-    //         let partText;
-    //
-    //         if (data === 'Gt') {
-    //             partText = 'ギター';
-    //         } else if (data === 'Ba') {
-    //             partText = 'ベース';
-    //         } else if (data === 'Dr') {
-    //             partText = 'ドラム';
-    //         }
-    //
-    //         const replaceText = await askingText.replace(/\w+/, partText);
-    //
-    //         await page.evaluate((text) => {
-    //             document.querySelector('textarea[name="messageBody"]').value = text;
-    //         }, replaceText);
-    //
-    //         // 回数を減らす
-    //         shouldAskingCount = (shouldAskingCount - 1);
-    //     }
-    //
-    //     console.log(id);
-    //     console.log('last resolve');
-    //
-    // });
-
-    // console.log('complete');
+    await browser.close();
 };
 
 
