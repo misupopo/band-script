@@ -4,5 +4,8 @@
     "url": "http://www.test",
     "url1": "http://www.test",
     "developerMode": false,
-    "songUrl": "http://www.song.co.jp"
+    "songUrl": "http://www.song.co.jp",
+    "myId": "000000",
+    "rotationStopCount": 2,
+    "shouldAskingCount": 5
 }

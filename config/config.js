@@ -8,5 +8,8 @@ module.exports = {
     id: define.id,
     password: define.password,
     developerMode: define.developerMode,
-    songUrl: define.songUrl
+    songUrl: define.songUrl,
+    myId: define.myId,
+    rotationStopCount: define.rotationStopCount,
+    shouldAskingCount: define.shouldAskingCount
 };

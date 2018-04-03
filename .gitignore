@@ -4,3 +4,4 @@ img/*
 !.gitkeep
 config.json
 articleText.txt
+askingText.txt
