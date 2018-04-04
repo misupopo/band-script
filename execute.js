@@ -4,7 +4,8 @@ const updateArticle2 = require('./routes/updateArticle2.js');
 const cronJob = require('cron').CronJob;
 
 const executeAction = async () => {
-    await updateArticle1.justUpdate();
+    // await updateArticle1.justUpdate();
+    await updateArticle2.update();
 
     // await updateArticle1.rotationAsking('Gt');
     // await updateArticle1.rotationAsking('Ba');
@@ -39,6 +40,21 @@ const executeAction = async () => {
     //
     // //ジョブ開始
     // job.start();
+
+    // await executeAction();
+
+    // const with9Update = new cronJob({
+    //     cronTime: '*/1 * * * *',
+    //     onTick: async () => {
+    //         await updateArticle2.update();
+    //     },
+    //     onComplete: function() {
+    //         console.log('onComplete!')
+    //     },
+    //     start: false
+    // });
+    //
+    // with9Update.start();
 
     await executeAction();
 
