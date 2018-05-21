@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/misupopo/band-script#readme",
   "dependencies": {
+    "optimist": "^0.6.1",
     "puppeteer": "^1.2.0"
   },
   "devDependencies": {

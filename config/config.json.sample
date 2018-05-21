@@ -7,5 +7,9 @@
     "songUrl": "http://www.song.co.jp",
     "myId": "000000",
     "rotationStopCount": 2,
-    "shouldAskingCount": 5
+    "shouldAskingCount": 5,
+    "updateTime1": "* */24 * * *",
+    "updateTime2": "* */24 * * *",
+    "rotationAsking1": "* */24 * * *",
+    "askingPart": "Gt Ba Dr"
 }

@@ -38,7 +38,7 @@ const updateArticle = async () => {
     ]);
 
     const editTile = await page.evaluate(() => document.querySelector('input[name="documentTitle"]').value);
-    const changeWord = await redis.get();
+    const changeWord = await redis.get('askingPart');
 
     const newEditTitle = editTile.replace(/\s(.*)/, ' ' + changeWord + '（デモ音源あり）');
 
@@ -137,7 +137,7 @@ const createArticle = async () => {
 
     await page.select('select[name="documentFlg"]', '1');
 
-    const changeWord = await redis.get();
+    const changeWord = await redis.get('askingPart');
 
     await page.type('input[name="documentTitle"]', 'バンドメンバー募集 ' + changeWord + '（デモ音源あり）');
 
@@ -298,7 +298,9 @@ const rotationAsking = async (data) => {
 
     const task = [];
 
-    for(let i = 0; i < config.rotationStopCount; i++) {
+    const rotationStopCount = redis.get('rotationStopCount');
+
+    for(let i = 0; i < rotationStopCount; i++) {
         task.push(Promise.resolve(page.evaluate(async () => {
             await document.querySelector('.show_more').click();
         })));
@@ -319,7 +321,7 @@ const rotationAsking = async (data) => {
     });
 
     // 問い合わせる回数
-    let shouldAskingCount = config.shouldAskingCount;
+    let shouldAskingCount = redis.get('shouldAskingCount');
 
     const shouldAsk = async (targetId) => {
         return new Promise(async (resolve, reject) => {

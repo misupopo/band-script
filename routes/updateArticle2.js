@@ -37,7 +37,7 @@ const updateArticle1 = async () => {
     ]);
 
     const editTile = await page.evaluate(() => document.querySelector('input[name="data[MemberRequest][title]"]').value);
-    const changeWord = await redis.get();
+    const changeWord = await redis.get('askingPart');
 
     const newEditTitle = editTile.replace(/\s(.*)/, ' ' + changeWord + '（デモ音源あり）');
 
