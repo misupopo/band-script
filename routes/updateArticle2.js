@@ -4,6 +4,9 @@ const puppeteer = require('puppeteer'),
     redis = require('../lib/redis'),
     path = require('path');
 
+const nodeEvents = require('events');
+nodeEvents.EventEmitter.prototype._maxListeners = 300;
+
 const updateArticle1 = async () => {
     const browser = await puppeteer.launch({
         headless: !!config.developerMode,
